@@ -1,43 +1,65 @@
 import React from 'react';
-import { Modal, Button, Tabs, Radio } from 'antd';
-
+import { Modal, Button, Tabs, Checkbox } from 'antd';
 const TabPane = Tabs.TabPane;
 
+//For the segments
+const CheckboxGroup = Checkbox.Group;
+
+
+const segment = [
+  { label: 'A', value: 'A' },
+  { label: 'B', value: 'B' },
+  { label: 'C', value: 'C' },
+];
+
+const name = [
+  { label: 'John', value: 'John' },
+  { label: 'Jim', value: 'Jim' },
+  { label: 'Joe', value: 'Joe' },
+];
+
 class ModalExp extends React.Component {
-  // state = {
-  //   modalVisible: false,
-  // };
+  constructor(props) {
+    super(props);
+    this.state = {
+      seg: 'null',
+      name: 'null',
+    };
+  }
+
+  // handleFilterChange = (pagination, filters, sorter, seg) => {
+  //   console.log('Various parameters', pagination, filters, sorter, seg);
+  //   this.setState({
+  //     filteredInfo: filters,
+  //     sortedInfo: sorter,
+  //   });
+  // }
 
   setModalVisible(modalVisible) {
     this.setState({ modalVisible });
   }
 
 
-
-//to set up the radio buttons
-  constructor(props) {
-    super(props);
-    this.state = {
-      modalVisible: false,
-      seg: 'null',
-    };
-  }
-
-  handleSegChange = e => {
-    const seg = e.target.value;
+//to set up the check buttons and the modal
+   onSegChange = (checkedValues) => {
+    const seg = checkedValues;
     this.setState({ seg });
-  };
+  }
+//Need to make this work!
+  onNameChange = (checkedValues) => {
+    const name = checkedValues;
+    this.setState({ name });
+  }
 
   onFilterSubmit = (e) => {
     // console.log(this.state.seg);
     //when user click on OK this func is called and passes the state up to the parent as a prop(onSubmit) in the App.js file
-    this.props.onSubmit(this.state.seg);
+    this.props.onSubmit(this.state);
+
   }
 
 
   render() {
-
-    const { seg } = this.state;
 
     return (
       <div>
@@ -58,16 +80,13 @@ class ModalExp extends React.Component {
 
             <TabPane tab="Segment" key="1">
 
-              {/* <Radio.Group onChange={this.handleModeChange} value={mode} style={{ marginBottom: 8 }}> */}
-              <Radio.Group onChange={this.handleSegChange} value={ seg } defaultChecked='false'  style={{ marginBottom: 8 }}>
-                <Radio.Button value="A">A</Radio.Button>
-                <Radio.Button value="B">B</Radio.Button>
-                <Radio.Button value="C">C</Radio.Button>
-              </Radio.Group>
+              <CheckboxGroup options={segment} defaultValue={[null]} onChange={this.onSegChange} />
 
             </TabPane>
-            <TabPane tab="Tab 2" key="2">
-              Content of tab 2
+            <TabPane tab="Name" key="2">
+
+              <CheckboxGroup options={name} defaultValue={[null]} onChange={this.onNameChange} />
+
             </TabPane>
             <TabPane tab="Tab 3" key="3">
               Content of tab 3
